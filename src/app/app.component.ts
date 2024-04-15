@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { TodosService } from './app.service';
+
 
 @Component({
   selector: 'app-root',
@@ -17,40 +19,13 @@ export class AppComponent {
   title = 'my-app';
   data: string = '';
   array : any = []
-  constructor() { }
+  constructor(private TodoService: TodosService) { 
+  }
   ngOnInit(){
     this.getData()
   }
   getData(query: string = ''){    
-    const savedTodos = localStorage.getItem('array');
-    if (savedTodos) {
-      if (query && query !=="") {
-        switch (query) {
-          case "1":
-            return this.array = JSON.parse(savedTodos);
-          case "2":
-            const todos: any[] = JSON.parse(savedTodos);
-            this.array = todos.filter((item:any) => {
-              if(item.completed == true) return item
-            })
-            break;
-          case "3":
-            const todo: any[] = JSON.parse(savedTodos);
-            this.array = todo.filter((item:any) => {
-              if(item.completed == false) return item
-            })
-            break;
-        }
-      }else{
-        this.array = JSON.parse(savedTodos);
-      }
-    } else {
-      this.array = [
-        { text: 'Task 1', completed: false },
-        { text: 'Task 2', completed: true }
-      ];
-      localStorage.setItem('todos', JSON.stringify(this.array));
-    }
+    this.array= this.TodoService.getTodos(query)
   }
   onEnter() {
     if(this.data != '') {
