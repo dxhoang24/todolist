@@ -1,0 +1,13 @@
+<h1>Demo của tao</h1>
+    <input type="text" [(ngModel)]="data" (keyup.enter)="onEnter()">
+    <button (click)="new()">Thêm mới</button>
+    <button (click)="search('1')">All</button>
+    <button (click)="search('2')">Hoàn thành</button>
+    <button (click)="search('3')">Chưa hoàn thành</button>
+    <ul>
+    <li *ngFor="let item of array; let i = index" [ngClass]="{'completed': item.completed}">
+        <input type="checkbox" style="margin-right: 20px;" (click)="complete(item,i)"  >
+        <label contenteditable="true" (blur)="update($event,i)" (keyup.enter)="onEnterEdit($event,item)"> {{item.text}} </label>
+        <button (click)="delete(i)" style="margin-left: 20px;">xóa</button>
+    </li>
+  </ul>
